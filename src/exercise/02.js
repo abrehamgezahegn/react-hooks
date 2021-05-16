@@ -3,14 +3,53 @@
 
 import * as React from 'react'
 
-function Greeting({initialName = ''}) {
-  // 🐨 initialize the state to the value from localStorage
-  // 💰 window.localStorage.getItem('name') || initialName
-  const [name, setName] = React.useState(initialName)
+function useLocalStorageState(
+  key,
+  defaultValue = '',
+  {serialize = JSON.stringify, deserialize = JSON.parse} = {},
+) {
+  const setDefaultValue = () =>
+    deserialize(localStorage.getItem(key)) || defaultValue
+  const [state, setState] = React.useState(setDefaultValue)
 
   // 🐨 Here's where you'll use `React.useEffect`.
   // The callback should set the `name` in localStorage.
   // 💰 window.localStorage.setItem('name', name)
+
+  const prevKey = React.useRef(key)
+  const num = React.useRef(0)
+  let num2 = 0
+
+  React.useEffect(() => {
+    if (prevKey.current !== key) {
+      localStorage.removeItem(prevKey)
+      prevKey.current = key
+    }
+    localStorage.setItem(prevKey, serialize(state))
+    num.current = num.current + 1
+    num2 = num2 + 1
+    console.log('REF NUM ', num.current)
+    console.log('VAR NUM', num2)
+  }, [state])
+
+  return [state, setState]
+}
+
+function Greeting({initialName = ''}) {
+  // 🐨 initialize the state to the value from localStorage
+  // 💰 window.localStorage.getItem('name') || initialName
+  // const setInitialState = () => localStorage.getItem('name') || initialName
+  // const [name, setName] = React.useState(setInitialState)
+
+  // // 🐨 Here's where you'll use `React.useEffect`.
+  // // The callback should set the `name` in localStorage.
+  // // 💰 window.localStorage.setItem('name', name)
+
+  // React.useEffect(() => {
+  //   localStorage.setItem('name', name)
+  // }, [name])
+
+  const [name, setName] = useLocalStorageState('name', 'Better work')
 
   function handleChange(event) {
     setName(event.target.value)
@@ -27,7 +66,7 @@ function Greeting({initialName = ''}) {
 }
 
 function App() {
-  return <Greeting />
+  return <Greeting initialName="Booboo" />
 }
 
 export default App
