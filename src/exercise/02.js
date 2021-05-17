@@ -17,6 +17,9 @@ function useLocalStorageState(
   // 💰 window.localStorage.setItem('name', name)
 
   const prevKey = React.useRef(key)
+
+  // to demo the diff between useRef and plain variable
+  // num2 is re-initialized on every render, num is only initialized once
   const num = React.useRef(0)
   let num2 = 0
 
@@ -26,6 +29,8 @@ function useLocalStorageState(
       prevKey.current = key
     }
     localStorage.setItem(prevKey, serialize(state))
+
+    // num2 al
     num.current = num.current + 1
     num2 = num2 + 1
     console.log('REF NUM ', num.current)
