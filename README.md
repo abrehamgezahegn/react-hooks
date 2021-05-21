@@ -1,5 +1,79 @@
-<div>
+![Abreham certificate](./react-hooks-certificate.png)
+
+<br />
+<br />
+<h2>Takeaway notes</h2>
+
+**Lazy initialization** - useState lazy initialization to avoid setting initial state on every render. 
+
+**React.useRef for variables** - learned that I can use this to initialize a variable instead of useState (causes re-render) or plain variable (re-initialized on every render). 
+
+
+**Object destructuring for defaulting values** - 
+``` 
+export function useLocalStorageState(
+ key,
+ defaultValue = '',
+ {serialize = JSON.stringify, deserialize = JSON.parse} = {},
+) {
+```
+learned this kind of destructuring and setting default values in function parameters.
+
+ 
+**(not new but)State lift vs colocation** - learned the former caused perf bottle neck, use colocation when I can state lift when I should.
+
+**Derived state vs managed state** - deriving multiple values from one state instead of turning every variable into state. If we use the latter we have to sync the derived states with the managed state every time the managed state is changing. 
+
+This improves code readability and decreases the code we have to write. 
+
+``` 
+const [state, setState] = useLocalStorageState('state', {
+   squares: Array(9).fill(null),
+ })
+ 
+ 
+ const nextValue = calculateNextValue(state.squares)
+ const winner = calculateWinner(state.squares)
+ const status = calculateStatus(winner, state.squares, nextValue)
+ ```
+
+ 
+**Avoid using isLoading states** - [this](https://kentcdodds.com/blog/stop-using-isloading-booleans) blog explains how we can use a ‘status’ state instead of isLoading and avoid depending on truthy values of states to render stuff.
+
+**Error boundary** - using [react-error-boundary](https://github.com/bvaughn/react-error-boundary)
+
+**Avoid making useEffect function async**- instead make an  async function inside useEffect and call it right away. This is because an async function automatically returns a Promise whether or not there is a return specified. This will confuse react because useEffect return should be a cleanup function. 
+
+```
+React.useEffect(() => {
+ 
+   const fetchData = async () => {
+   	const = await myAsyncCall(); 
+   }
+ 
+   fetchData()
+   return () => { // cleanup }
+ }, [pokemonName])
+ ```
+ 
+
+
+
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <h2>Default Readme</h2>
+
   <h1 align="center"><a href="https://epicreact.dev/hooks">🎣 React Hooks 🚀 EpicReact.Dev</a></h1>
+
+
   <strong>
     There are better patterns and practices that are an entirely new approach to
     developing components and managing state in your React applications.
