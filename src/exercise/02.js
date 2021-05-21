@@ -35,7 +35,7 @@ export function useLocalStorageState(
     // num2 = num2 + 1
     // console.log('REF NUM ', num.current)
     // console.log('VAR NUM', num2)
-  }, [state])
+  }, [state, key, serialize])
 
   return [state, setState]
 }

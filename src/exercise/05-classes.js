@@ -2,7 +2,6 @@
 // 💯 (alternate) migrate from classes
 // http://localhost:3000/isolated/exercise/05-classes.js
 
-import {cleanup} from '@testing-library/react'
 import * as React from 'react'
 import VanillaTilt from 'vanilla-tilt'
 
@@ -11,6 +10,7 @@ import VanillaTilt from 'vanilla-tilt'
 
 const Tilt = ({children}) => {
   const tiltRef = React.useRef()
+
   React.useEffect(() => {
     const tiltNode = tiltRef.current
     const vanillaTiltOptions = {
@@ -22,7 +22,7 @@ const Tilt = ({children}) => {
     VanillaTilt.init(tiltNode, vanillaTiltOptions)
 
     return () => {
-      tiltRef.current.vanillaTilt.destroy()
+      tiltNode.vanillaTilt.destroy()
     }
   }, [])
 
@@ -33,29 +33,6 @@ const Tilt = ({children}) => {
   )
 }
 
-// class Tilt extends React.Component {
-//   tiltRef = React.createRef()
-//   componentDidMount() {
-//     const tiltNode = this.tiltRef.current
-//     const vanillaTiltOptions = {
-//       max: 25,
-//       speed: 400,
-//       glare: true,
-//       'max-glare': 0.5,
-//     }
-//     VanillaTilt.init(tiltNode, vanillaTiltOptions)
-//   }
-//   componentWillUnmount() {
-//     this.tiltRef.current.vanillaTilt.destroy()
-//   }
-//   render() {
-//     return (
-//       <div ref={this.tiltRef} className="tilt-root">
-//         <div className="tilt-child">{this.props.children}</div>
-//       </div>
-//     )
-//   }
-// }
 function App() {
   return (
     <Tilt>
