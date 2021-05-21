@@ -3,7 +3,7 @@
 
 import * as React from 'react'
 
-function useLocalStorageState(
+export function useLocalStorageState(
   key,
   defaultValue = '',
   {serialize = JSON.stringify, deserialize = JSON.parse} = {},
@@ -20,21 +20,21 @@ function useLocalStorageState(
 
   // to demo the diff between useRef and plain variable
   // num2 is re-initialized on every render, num is only initialized once
-  const num = React.useRef(0)
-  let num2 = 0
+  // const num = React.useRef(0)
+  // let num2 = 0
 
   React.useEffect(() => {
     if (prevKey.current !== key) {
       localStorage.removeItem(prevKey)
-      prevKey.current = key
     }
-    localStorage.setItem(prevKey, serialize(state))
+    prevKey.current = key
 
+    localStorage.setItem(prevKey.current, serialize(state))
     // num2 al
-    num.current = num.current + 1
-    num2 = num2 + 1
-    console.log('REF NUM ', num.current)
-    console.log('VAR NUM', num2)
+    // num.current = num.current + 1
+    // num2 = num2 + 1
+    // console.log('REF NUM ', num.current)
+    // console.log('VAR NUM', num2)
   }, [state])
 
   return [state, setState]
